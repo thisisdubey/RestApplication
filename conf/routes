@@ -3,10 +3,18 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+#GET     /                           controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Swagger
+#GET  /api-docs.json  controllers.ApiHelpController.getResources
+# GET  /swagger  controllers.Application.swagger
+# Swagger endpoints
+GET     /api-doc/                                                 controllers.Assets.at(path="/public/swagger", file="/swagger.html")
+GET     /api-doc/*file                                            controllers.Assets.at(path="/public/swagger", file)
+GET     /swagger.json                                             @controllers.ApiHelpController.getResources
 
 # Cars
 GET        /api/cars          @controllers.CarsController.index

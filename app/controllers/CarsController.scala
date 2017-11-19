@@ -1,7 +1,9 @@
 package controllers
 
+import java.util.Date
 import javax.inject.Inject
 
+import io.swagger.annotations.{ApiParam, ApiResponse, ApiResponses}
 import play.api.libs.json.Json
 import play.api.mvc._
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
@@ -20,40 +22,59 @@ class CarsController @Inject()(val reactiveMongoApi: ReactiveMongoApi)  extends 
   }
 
   def create = Action.async(BodyParsers.parse.json) { implicit request =>
-    val name = (request.body \ Name).as[String]
-    val description = (request.body \ Description).as[String]
-    val user = (request.body \ User).as[String]
+    val title = (request.body \ Title).as[String]
+    val fuel = (request.body \ Fuel).as[String]
+    val price = (request.body \ Price).as[String]
+    val newCar = (request.body \ NewCar).as[String]
+    val mileage = (request.body \ Mileage).as[String]
+    val firstRegistration = (request.body \ FirstRegistration).as[String]
     carsRepo.save(BSONDocument(
-      Name -> name,
-      Description -> description,
-      User -> user
+      Title -> title,
+      Fuel -> fuel,
+      Price -> price,
+      NewCar -> newCar,
+      Mileage -> mileage,
+      FirstRegistration -> FirstRegistration
     )).map(result => Created)
   }
+ /* @ApiResponses(Array(
+    new ApiResponse(code = 400, message = "Invalid ID supplied"),
+    new ApiResponse(code = 404, message = "Pet not found")))
+  def read(@ApiParam(value = "ID of the pet to fetch") id: String) = Action.async { implicit request =>
+    carsRepo.select(BSONDocument(Id -> BSONObjectID(id))).map(car => Ok(Json.toJson(car)))
+  }*/
 
   def read(id: String) = Action.async { implicit request =>
-    carsRepo.select(BSONDocument(id -> BSONObjectID(id))).map(car => Ok(Json.toJson(car)))
+    carsRepo.select(BSONDocument(Id -> BSONObjectID(id))).map(car => Ok(Json.toJson(car)))
   }
 
   def update(id: String) = Action.async(BodyParsers.parse.json) { implicit request =>
-    val name = (request.body \ Name).as[String]
-    val description = (request.body \ Description).as[String]
-    val user = (request.body \ User).as[String]
+    val title = (request.body \ Title).as[String]
+    val fuel = (request.body \ Fuel).as[String]
+    val price = (request.body \ Price).as[String]
+    val newCar = (request.body \ NewCar).as[String]
+    val mileage = (request.body \ Mileage).as[String]
+    val firstRegistration = (request.body \ FirstRegistration).as[String]
     carsRepo.update(BSONDocument(Id -> BSONObjectID(id)),
-      BSONDocument("$set" -> BSONDocument(Name -> name, Description -> description, User -> user)))
+      BSONDocument("$set" -> BSONDocument(Title -> title, Fuel -> fuel, Price -> price, NewCar -> newCar, Mileage -> mileage, FirstRegistration -> firstRegistration)))
       .map(result => Accepted)
   }
 
   def delete(id: String) = Action.async {
-    carsRepo.remove(BSONDocument(id -> BSONObjectID(id)))
+    carsRepo.remove(BSONDocument(Id -> BSONObjectID(id)))
     .map(result => Accepted)
   }
 }
 
 object CarFields {
   val Id = "_id"
-  val Name ="name"
-  val Description = "description"
-  val User = "user"
+  val Title ="title"
+  val Fuel = "fuel"
+  val Price = "price"
+  val NewCar = "newCar"
+  val Mileage = "mileage"
+  val FirstRegistration = "firstRegistration"
+
 }
 
 

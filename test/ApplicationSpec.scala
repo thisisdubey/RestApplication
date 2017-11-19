@@ -51,7 +51,7 @@ class ApplicationSpec extends Specification with Results with Mockito {
       }
     }
 
-    "Recipes#delete" should {
+    "Cars#delete" should {
       "remove recipe" in {
         mockRecipeRepo.remove(any[BSONDocument])(any[ExecutionContext]) returns Future(lastRequestStatus)
 
@@ -62,8 +62,8 @@ class ApplicationSpec extends Specification with Results with Mockito {
       }
     }
 
-    "Recipes#list" should {
-      "list recipes" in {
+    "Cars#list" should {
+      "list Cars" in {
         mockRecipeRepo.find()(any[ExecutionContext]) returns Future(posts)
 
         val result: Future[Result] = controller.index().apply(FakeRequest())
@@ -73,7 +73,7 @@ class ApplicationSpec extends Specification with Results with Mockito {
       }
     }
 
-    "Recipes#read" should {
+    "Cars#read" should {
       "read recipe" in {
         mockRecipeRepo.select(any[BSONDocument])(any[ExecutionContext]) returns Future(Option(carOne))
 
@@ -84,7 +84,7 @@ class ApplicationSpec extends Specification with Results with Mockito {
       }
     }
 
-    "Recipes#create" should {
+    "Cars#create" should {
       "create recipe" in {
         mockRecipeRepo.save(any[BSONDocument])(any[ExecutionContext]) returns Future(lastRequestStatus)
 
@@ -96,7 +96,7 @@ class ApplicationSpec extends Specification with Results with Mockito {
       }
     }
 
-    "Recipes#update" should {
+    "Cars#update" should {
       "update recipe" in {
         mockRecipeRepo.update(any[BSONDocument], any[BSONDocument])(any[ExecutionContext]) returns Future(lastRequestStatus)
 
