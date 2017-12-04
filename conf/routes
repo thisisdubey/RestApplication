@@ -17,7 +17,7 @@ GET     /api-doc/*file                                            controllers.As
 GET     /swagger.json                                             @controllers.ApiHelpController.getResources
 
 # Cars
-GET        /api/cars          @controllers.CarsController.index
+GET        /api/cars          @controllers.CarsController.index(filter:Option[String])
 GET        /api/cars/:id      @controllers.CarsController.read(id: String)
 POST       /api/cars          @controllers.CarsController.create
 DELETE     /api/cars/:id      @controllers.CarsController.delete(id: String)

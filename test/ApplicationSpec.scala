@@ -64,12 +64,12 @@ class ApplicationSpec extends Specification with Results with Mockito {
 
     "Cars#list" should {
       "list Cars" in {
-        mockRecipeRepo.find()(any[ExecutionContext]) returns Future(posts)
+        mockRecipeRepo.find(Some("id"))(any[ExecutionContext]) returns Future(posts)
 
-        val result: Future[Result] = controller.index().apply(FakeRequest())
+        val result: Future[Result] = controller.index(Some("id")).apply(FakeRequest())
 
         contentAsJson(result) must be equalTo JsArray(posts)
-        there was one(mockRecipeRepo).find()(any[ExecutionContext])
+        there was one(mockRecipeRepo).find(Some("id"))(any[ExecutionContext])
       }
     }
 

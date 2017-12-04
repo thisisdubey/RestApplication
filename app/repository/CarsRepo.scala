@@ -13,7 +13,7 @@ import reactivemongo.bson.{BSONDocument, BSONObjectID}
 import scala.concurrent.{ExecutionContext, Future}
 
 trait CarsRepo {
-  def find()(implicit ec: ExecutionContext): Future[List[JsObject]]
+  def find(orderBy:Option[String])(implicit ec: ExecutionContext): Future[List[JsObject]]
 
   def select(selector: BSONDocument)(implicit ec: ExecutionContext): Future[Option[JsObject]]
 
@@ -28,8 +28,8 @@ class CarsRepoImpl @Inject() (reactiveMongoApi: ReactiveMongoApi) extends CarsRe
 
   def collection = reactiveMongoApi.db.collection[JSONCollection]("carsData")
 
-  override def find()(implicit ec: ExecutionContext): Future[List[JsObject]] = {
-    val genericQueryBuilder = collection.find(Json.obj())
+  override def find(orderBy:Option[String])(implicit ec: ExecutionContext): Future[List[JsObject]] = {
+    val genericQueryBuilder = collection.find(Json.obj()).sort(Json.obj( orderBy.getOrElse("Id")-> 1))
     val cursor = genericQueryBuilder.cursor[JsObject](ReadPreference.Primary)
     cursor.collect[List]()
   }
